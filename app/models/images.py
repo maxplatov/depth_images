@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from models.base import BaseListQueryModel
+from app.models.base import BaseListQueryModel
 
 
 class ImagesListQueryModel(BaseListQueryModel):

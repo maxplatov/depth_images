@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import select, desc, update
+from sqlalchemy import desc, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
@@ -43,7 +43,5 @@ class BaseRepository(BaseAdapter):
         return select(self.entity).order_by(desc(self.entity.id))
 
     async def get_one(self, pk: int):
-        result = await self.exec(
-            self.select.where(self.entity.id == pk)
-        )
+        result = await self.exec(self.select.where(self.entity.id == pk))
         return result and result.scalars().one()

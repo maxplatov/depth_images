@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from starlette.status import HTTP_200_OK
 
-from app.models.images import ImagesListQueryModel, ImagesModelOut
 from app.api.dependencies import get_images_service
+from app.models.images import ImagesListQueryModel, ImagesModelOut
 from app.service.images import ImagesService
 
 images_router = APIRouter()
@@ -15,7 +15,7 @@ images_router = APIRouter()
 )
 async def get_images(
     query: ImagesListQueryModel,
-    images_service: ImagesService = Depends(get_images_service)
+    images_service: ImagesService = Depends(get_images_service),
 ):
     return await images_service.get_all(query)
 
@@ -26,7 +26,6 @@ async def get_images(
     status_code=HTTP_200_OK,
 )
 async def get_image(
-    image_id: int,
-    images_service: ImagesService = Depends(get_images_service)
+    image_id: int, images_service: ImagesService = Depends(get_images_service)
 ):
     return await images_service.get(image_id)

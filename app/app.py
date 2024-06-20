@@ -4,18 +4,21 @@ import alembic
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette._exception_handler import ExceptionHandlers
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
-from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api.routers.images import images_router
-from app.api.exception_handlers import http_exception_handler, validation_exception_handler
+from app.api.exception_handlers import (
+    http_exception_handler,
+    validation_exception_handler,
+)
 from app.api.middlewares import add_process_time_header
-from app.models.base import HTTPErrorModel
-from app.settings import Settings
+from app.api.routers.images import images_router
 from app.db.engine import DatabaseManager
-from app.service.images import ImagesService
+from app.models.base import HTTPErrorModel
 from app.repository.images import ImagesRepository
+from app.service.images import ImagesService
+from app.settings import Settings
 
 logger = logging.getLogger(__name__)
 

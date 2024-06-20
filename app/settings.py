@@ -1,11 +1,7 @@
 import logging
 
 from pydantic import BaseModel, ConfigDict
-from pydantic_settings import (
-    BaseSettings,
-    SettingsConfigDict,
-)
-
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +9,7 @@ logger = logging.getLogger(__name__)
 class ApplicationSettings(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    host: str = "0.0.0.0"
+    host: str = "127.0.0.1"
     port: int = 8000
     workers: int | None = None
 
@@ -30,7 +26,8 @@ class DatabaseSettings(BaseModel):
     def get_dsn(self, async_schema: bool = True) -> str:
         return (
             f"{'postgresql+asyncpg' if async_schema else 'postgresql'}://"
-            f"{self.username}:{self.pwd}@{self.host}:{self.port}/{self.database}"
+            f"{self.username}:{self.pwd}@"
+            f"{self.host}:{self.port}/{self.database}"
         )
 
 

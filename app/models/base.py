@@ -26,4 +26,3 @@ class PaginationModel(BaseModel):
 
 class BaseListQueryModel(OrderByModel, PaginationModel):
     pass
-

@@ -8,14 +8,12 @@ from app.models.base import HTTPErrorModel
 
 
 async def http_exception_handler(
-    _: Request,
-    exception_: StarletteHTTPException
+    _: Request, exception_: StarletteHTTPException
 ) -> JSONResponse:
     return JSONResponse(
         status_code=exception_.status_code,
         content=HTTPErrorModel(
-            message=exception_.detail,
-            status_code=exception_.status_code
+            message=exception_.detail, status_code=exception_.status_code
         ).model_dump(),
     )
 
@@ -33,7 +31,6 @@ async def validation_exception_handler(
     return JSONResponse(
         status_code=HTTP_422_UNPROCESSABLE_ENTITY,
         content=HTTPErrorModel(
-            message=message,
-            status_code=HTTP_422_UNPROCESSABLE_ENTITY
+            message=message, status_code=HTTP_422_UNPROCESSABLE_ENTITY
         ).model_dump(),
     )

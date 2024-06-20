@@ -1,0 +1,5 @@
+pytest==7.4.0
+pytest-cov==4.1.0
+pytest-logger==0.5.1
+flake8-pyproject==1.2.3
+docformatter[tomli]==1.7.5

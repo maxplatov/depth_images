@@ -8,27 +8,20 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.api.routers.images import images_router
 from app.api.exception_handlers import http_exception_handler, validation_exception_handler
 from app.api.middlewares import add_process_time_header
 from app.models.base import HTTPErrorModel
 from app.settings import Settings
-from db.engine import DatabaseManager
+from app.db.engine import DatabaseManager
+from app.service.images import ImagesService
+from app.repository.images import ImagesRepository
 
 logger = logging.getLogger(__name__)
 
 
-def setup_middlewares(app: FastAPI) -> None:
-    app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
 def setup_routes(app: FastAPI) -> None:
-    app.include_router(auth_router, prefix="/api/v1", tags=["images"])
+    app.include_router(images_router, prefix="/api/v1", tags=["images"])
 
 
 def setup_middlewares(app: FastAPI) -> None:
@@ -66,10 +59,12 @@ def create_app(settings: Settings) -> FastAPI:
     run_migrations()
     setup_middlewares(app)
 
-
     @app.on_event("startup")
     def on_startup():
         db_manager = DatabaseManager(settings.db)
+        image_repository = ImagesRepository(db_manager.session)
+
+        app.state.image_service = ImagesService(image_repository)
         logger.info("On startup end")
 
     return app

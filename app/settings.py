@@ -27,13 +27,11 @@ class DatabaseSettings(BaseModel):
     pwd: str = "depthimages"
     database: str = "depthimages"
 
-    @property
-    def dsn(self) -> str:
+    def get_dsn(self, async_schema: bool = True) -> str:
         return (
-            f"postgresql://{self.username}:{self.pwd}"
-            f"@{self.host}:{self.port}/{self.database}"
+            f"{'postgresql+asyncpg' if async_schema else 'postgresql'}://"
+            f"{self.username}:{self.pwd}@{self.host}:{self.port}/{self.database}"
         )
-
 
 
 class Settings(BaseSettings):

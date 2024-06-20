@@ -1,0 +1,38 @@
+---
+repos:
+  - hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: debug-statements
+      - id: detect-private-key
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+  - hooks:
+      - id: isort
+    repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+  - hooks:
+      - id: eradicate
+    repo: https://github.com/PyCQA/eradicate
+    rev: 2.3.0
+  - hooks:
+      - id: black
+    repo: https://github.com/psf/black
+    rev: 24.1.1
+  - hooks:
+      - additional_dependencies:
+          - tomli
+        id: docformatter
+    repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.5
+  - hooks:
+      - additional_dependencies:
+          - darglint==1.8.1
+          - flake8-bandit==4.1.1
+          - flake8-black==0.3.6
+          - flake8-isort==5.0.0
+          - flake8-pyproject==1.2.3
+        id: flake8
+        verbose: true
+    repo: https://github.com/PyCQA/flake8
+    rev: 7.0.0

@@ -1,0 +1,34 @@
+[tool.black]
+line-length = 80
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+testpaths = [
+    'tests'
+]
+
+[tool.docformatter]
+recursive = true
+wrap-summaries = 80
+wrap-descriptions = 80
+
+
+[tool.flake8]
+ignore = ["W503", "DAR", "S101", "E203"]
+max-line-length = 80
+show-source = true
+statistics = true
+doctests = true
+inline-quotes = "double"
+require_plugins = [
+    'darglint',
+    'flake8-bandit',
+    'flake8-black',
+    'flake8-isort',
+    'flake8-pyproject==1.2.3',
+]
+
+[tool.isort]
+profile = "black"
+line_length = 80

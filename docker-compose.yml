@@ -1,0 +1,30 @@
+version: '3.9'
+volumes:
+  pg-data:
+  mongo-data:
+  redis-data:
+
+services:
+  db:
+    image: "postgres:16.3-alpine"
+    volumes:
+      - "pg-data:/var/lib/postgresql/data"
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-depthimages}
+      - POSTGRES_USER=${POSTGRES_USER:-depthimages}
+      - POSTGRES_DB=${POSTGRES_DB:-depthimages}
+
+  backend:
+    build:
+      context: .
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '8000:8000'
+

@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class DatabaseManager:
     def __init__(self, settings: DatabaseSettings):
         self._settings = settings
-        self._engine = create_async_engine(settings.get_dsn())
+        self._engine = create_async_engine(self._settings.get_dsn())
         self._session_factory = async_sessionmaker(
             self._engine, expire_on_commit=False
         )

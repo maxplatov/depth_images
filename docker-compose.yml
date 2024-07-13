@@ -1,8 +1,6 @@
 version: '3.9'
 volumes:
   pg-data:
-  mongo-data:
-  redis-data:
 
 services:
   db:

@@ -14,7 +14,7 @@ images_router = APIRouter()
     status_code=HTTP_200_OK,
 )
 async def get_images(
-    query: ImagesListQueryModel,
+    query: ImagesListQueryModel = Depends(),
     images_service: ImagesService = Depends(get_images_service),
 ):
     return await images_service.get_all(query)

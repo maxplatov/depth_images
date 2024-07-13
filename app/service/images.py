@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from sqlalchemy import Select
 from starlette.status import HTTP_404_NOT_FOUND
 
 from app.db.models import Image
@@ -22,6 +23,17 @@ class ImagesService:
     def __init__(self, images_repository: ImagesRepository):
         self._images_repository = images_repository
 
+    @staticmethod
+    def _get_filtered_query(
+        db_query: Select,
+        query: ImagesListQueryModel,
+    ) -> Select:
+        if query.depth_min:
+            db_query.where(Image.depth >= query.depth_min)
+        if query.depth_max:
+            db_query.where(Image.depth <= query.depth_max)
+        return db_query
+
     async def get(self, image_id: int) -> Image:
         image = await self._images_repository.get_one(image_id)
         if not image:
@@ -38,7 +50,9 @@ class ImagesService:
     async def get_all(
         self, query: ImagesListQueryModel
     ) -> list[ImagesModelOut]:
-        images = await self._images_repository.get_all(query)
+        db_query = self._images_repository.get_select_query(query)
+        self._get_filtered_query(db_query, query)
+        images = await self._images_repository.get_all(db_query)
         images_out_list = []
         for image in images:
             image.pixels = pixels_transform_from_binary(image.pixels)

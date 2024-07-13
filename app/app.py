@@ -1,6 +1,5 @@
 import logging
 
-import alembic
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette._exception_handler import ExceptionHandlers
@@ -8,6 +7,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
+import alembic.config
 from app.api.exception_handlers import (
     http_exception_handler,
     validation_exception_handler,
@@ -54,7 +54,6 @@ def run_migrations() -> None:
 def create_app(settings: Settings) -> FastAPI:
     app = FastAPI(
         title="Depth images",
-        root_path=settings.app.proxy_path,
         exception_handlers=get_exception_handlers(),
         responses={422: {"model": HTTPErrorModel}},
     )
@@ -65,7 +64,7 @@ def create_app(settings: Settings) -> FastAPI:
     @app.on_event("startup")
     def on_startup():
         db_manager = DatabaseManager(settings.db)
-        image_repository = ImagesRepository(db_manager.session)
+        image_repository = ImagesRepository(db_manager)
 
         app.state.image_service = ImagesService(image_repository)
         logger.info("On startup end")

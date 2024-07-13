@@ -1,8 +1,8 @@
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import create_engine, pool
 
+from alembic import context
 from app.db.models import Base
 from app.settings import SETTINGS
 
@@ -38,6 +38,8 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=True,
+        as_sql=True,
     )
 
     with context.begin_transaction():
@@ -51,13 +53,16 @@ def run_migrations_online() -> None:
     the context.
     """
     connectable = create_engine(
-        url=SETTINGS.db.get_dsn(),
+        url=SETTINGS.db.get_dsn(async_schema=False),
         poolclass=pool.NullPool,
     )
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            compare_type=True,
+            transaction_per_migration=True,
         )
 
         with context.begin_transaction():

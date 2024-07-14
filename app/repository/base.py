@@ -1,13 +1,10 @@
-import logging
-
 from db.engine import DatabaseManager
+from loguru import logger
 from models.base import BaseListQueryModel
 from sqlalchemy import Select, asc, desc, select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.db.base import Base
-
-logger = logging.getLogger(__name__)
 
 
 class BaseAdapter:

@@ -1,8 +1,7 @@
-import logging
-
 import alembic.config
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from loguru import logger
 from starlette._exception_handler import ExceptionHandlers
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -19,8 +18,6 @@ from app.models.base import HTTPErrorModel
 from app.repository.images import ImagesRepository
 from app.service.images import ImagesService
 from app.settings import Settings
-
-logger = logging.getLogger(__name__)
 
 
 def setup_routes(app: FastAPI) -> None:

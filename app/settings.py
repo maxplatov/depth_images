@@ -1,9 +1,6 @@
-import logging
-
+from loguru import logger
 from pydantic import BaseModel, ConfigDict
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-logger = logging.getLogger(__name__)
 
 
 class ApplicationSettings(BaseModel):

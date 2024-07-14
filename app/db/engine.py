@@ -1,7 +1,7 @@
-import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -10,8 +10,6 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.settings import DatabaseSettings
-
-logger = logging.getLogger(__name__)
 
 
 class DatabaseManager:

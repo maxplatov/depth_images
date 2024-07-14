@@ -25,13 +25,14 @@ class BaseAdapter:
         result = await self.exec(stmt) or []
         return result and result.scalars().all()
 
-    async def insert(self, model):
-        self.db_session.add(model)
+    async def create(self, model):
         try:
-            await self.db_session.flush()
+            async with self.db_manager.session() as session:
+                session.add(model)
+                await session.commit()
+                await session.refresh(model)
         except SQLAlchemyError as e:
             logger.error(e)
-        await self.db_session.refresh(model)
         return model
 
 

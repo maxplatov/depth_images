@@ -1,5 +1,6 @@
 import logging
 
+import alembic.config
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette._exception_handler import ExceptionHandlers
@@ -7,7 +8,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
-import alembic.config
 from app.api.exception_handlers import (
     http_exception_handler,
     validation_exception_handler,

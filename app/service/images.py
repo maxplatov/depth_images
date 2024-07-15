@@ -1,10 +1,4 @@
 from fastapi import HTTPException
-from service.consts import RESIZED_IMAGE_WIDTH
-from service.utils import (
-    get_image_out_model,
-    pixels_transform_to_binary,
-    resize_image_width,
-)
 from sqlalchemy import Select
 from starlette.status import HTTP_404_NOT_FOUND
 
@@ -15,6 +9,12 @@ from app.models.images import (
     ImagesModelOut,
 )
 from app.repository.images import ImagesRepository
+from app.service.consts import RESIZED_IMAGE_WIDTH
+from app.service.utils import (
+    get_image_out_model,
+    pixels_transform_to_binary,
+    resize_image_width,
+)
 
 
 class ImagesService:

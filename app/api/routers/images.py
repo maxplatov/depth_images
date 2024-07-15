@@ -25,7 +25,7 @@ async def get_images(
 
 
 @images_router.get(
-    "/{image_id}",
+    "/images/{image_id}",
     response_model=ImagesModelOut,
     status_code=HTTP_200_OK,
 )

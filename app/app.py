@@ -64,6 +64,7 @@ def create_app(settings: Settings) -> FastAPI:
         image_repository = ImagesRepository(db_manager)
 
         app.state.image_service = ImagesService(image_repository)
+        app.state.db_manager = db_manager
         logger.info("On startup end")
 
     return app

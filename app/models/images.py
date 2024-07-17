@@ -44,6 +44,6 @@ class CustomColormapIn(BaseCustomModel):
             if color not in CSS4_COLORS:
                 raise HTTPException(
                     HTTP_400_BAD_REQUEST,
-                    f"{color} is undefined. Try another one.",
+                    f"{color=} not found. Try another one.",
                 )
         return self

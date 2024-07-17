@@ -4,6 +4,7 @@ volumes:
 
 services:
   db:
+    container_name: depth_images_db
     image: "postgres:16.3-alpine"
     volumes:
       - "pg-data:/var/lib/postgresql/data"
@@ -16,6 +17,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-depthimages}
 
   backend:
+    container_name: depth_images_backend
     build:
       context: .
     env_file:

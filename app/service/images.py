@@ -11,6 +11,7 @@ from app.models.images import (
 from app.repository.images import ImagesRepository
 from app.service.consts import RESIZED_IMAGE_WIDTH
 from app.service.utils import (
+    apply_and_get_colormap,
     get_image_out_model,
     pixels_transform_to_binary,
     resize_image_width,
@@ -59,3 +60,10 @@ class ImagesService:
         for image in images:
             images_out_list.append(get_image_out_model(image))
         return images_out_list
+
+    async def apply_custom_colormap(
+        self, image_id: int, colors: list[str]
+    ) -> ImagesModelOut:
+        image = await self.get(image_id)
+        image.pixels = apply_and_get_colormap(image.pixels, colors)
+        return image

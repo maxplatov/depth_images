@@ -3,6 +3,7 @@ from starlette.status import HTTP_200_OK
 
 from app.api.dependencies import get_images_service
 from app.models.images import (
+    CustomColormapIn,
     ImagesListQueryModel,
     ImagesModelIn,
     ImagesModelOut,
@@ -45,3 +46,16 @@ async def add_image(
     images_service: ImagesService = Depends(get_images_service),
 ):
     return await images_service.create(image)
+
+
+@images_router.post(
+    "/images/{image_id}/apply_colormap",
+    response_model=ImagesModelOut,
+    status_code=HTTP_200_OK,
+)
+async def apply_custom_colormap(
+    image_id: int,
+    model_in: CustomColormapIn,
+    images_service: ImagesService = Depends(get_images_service),
+):
+    return await images_service.apply_custom_colormap(image_id, model_in.colors)

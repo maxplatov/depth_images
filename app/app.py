@@ -9,6 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.api.exception_handlers import (
     http_exception_handler,
+    unhandled_exception_handler,
     validation_exception_handler,
 )
 from app.api.middlewares import add_process_time_header
@@ -39,6 +40,7 @@ def get_exception_handlers() -> ExceptionHandlers:
     return {
         StarletteHTTPException: http_exception_handler,
         RequestValidationError: validation_exception_handler,
+        Exception: unhandled_exception_handler,
     }
 
 

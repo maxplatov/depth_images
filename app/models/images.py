@@ -1,5 +1,6 @@
 from fastapi import HTTPException
-from pydantic import model_validator
+from matplotlib.colors import CSS4_COLORS
+from pydantic import Field, model_validator
 from starlette.status import HTTP_400_BAD_REQUEST
 
 from app.models.base import BaseCustomModel, BaseListQueryModel
@@ -30,3 +31,19 @@ class ImagesModelOut(BaseCustomModel):
     id: int
     depth: float
     pixels: list[int]
+
+
+class CustomColormapIn(BaseCustomModel):
+    colors: list[str] = Field(
+        description="List of colors. For example ['red', 'blue', 'green']"
+    )
+
+    @model_validator(mode="after")
+    def check_colors(self):
+        for color in self.colors:
+            if color not in CSS4_COLORS:
+                raise HTTPException(
+                    HTTP_400_BAD_REQUEST,
+                    f"{color} is undefined. Try another one.",
+                )
+        return self

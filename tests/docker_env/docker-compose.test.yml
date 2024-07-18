@@ -1,0 +1,28 @@
+version: '3.9'
+volumes:
+  pg-data:
+
+services:
+  db-test:
+    image: "postgres:16.3-alpine"
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=test
+      - POSTGRES_DB=test
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d test -U test -h localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+
+  backend-test:
+    build:
+      context: ../..
+      dockerfile: tests/docker_env/Dockerfile
+    depends_on:
+      db-test:
+        condition: service_healthy
+    env_file:
+      - .env.test
+    command: pytest --cov=app --cov-report term-missing tests
